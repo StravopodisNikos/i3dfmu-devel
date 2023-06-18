@@ -1,5 +1,4 @@
 #include <i3dfmu.h>
-#include <uart_comm_ovidius.h>
 #include <SoftwareSerial.h>
 
 SoftwareSerial i3dfmu2iddh_serial(I3DFMU_RxPin, I3DFMU_TxPin);
@@ -28,9 +27,9 @@ void loop() {
   }
 
   // Always checks if IDDH has sent a request
-  if (i3dfmu2iddh_serial.available()) {
-    UNIT.cmd_received = i3dfmu2iddh_serial.read();
+  if ( i3dfmu2iddh_serial.available() ) {
+    UNIT.execute_request(i3dfmu2iddh_serial);
   }
-  
 
+  delay(1);
 }
