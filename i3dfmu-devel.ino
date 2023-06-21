@@ -1,18 +1,20 @@
 #include <i3dfmu.h>
-//#include <SoftwareSerial.h>
-
-//SoftwareSerial i3dfmu2iddh_serial(I3DFMU_RxPin, I3DFMU_TxPin);
 
 uart_comm_ns::uart_comm_ovidius AGENT;
 i3dfmu_ns::i3dfmu UNIT;
 
 void setup() {
   Serial.begin(USB_BAUD1); // Opem port to PC for real-time data plotting
-  Serial2.begin(USB_BAUD1); // OPen port for comm with IDDH (Intermediate data handler for comm with robot Master)
+  Serial2.begin(IDDH_BAUD1); // OPen port for comm with IDDH (Intermediate data handler for comm with robot Master)
   
   UNIT.setup_unit(); // setup the 3d force sensor(establish pins for I/O, set calibration factors)
 
   // Unit waits until is pinged from master
+  // ... next to ne coded ... 
+  
+  // Initialize timing vars for state-machie logic
+  UNIT.last_usb_plot_ms    = 0;
+  UNIT.last_data_sample_ms = 0;
 }
 
 void loop() {
@@ -33,5 +35,4 @@ void loop() {
     UNIT.execute_request(i3dfmu2iddh_serial);
   }
 
-  delay(1);
 }
